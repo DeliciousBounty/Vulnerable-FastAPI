@@ -37,7 +37,7 @@ Then
 ```
 git clone 
 source fastapienv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 cd sql_app
 ```
 
