@@ -30,7 +30,7 @@ This Application works with mysql database, you need to create a database, check
 To create a new database:
 ```
 mysql 
-CREATE DATABASE 'restapi';
+CREATE DATABASE restapi;
 ```
 Then 
 

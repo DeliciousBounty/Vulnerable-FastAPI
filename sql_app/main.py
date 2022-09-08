@@ -179,8 +179,8 @@ def mpesa_callback(db: Session = Depends(get_db)):
 
 
 ###/cart/username/itemId?updatePrice=2
-@app.get("/cart/{username}/{itemId}/update")
-def apiendpoint(db: Session = Depends(get_db),username: str="user_test",itemId: int=1, price: int=0,tdependencies=[Depends(JWTBearer())]):
+@app.get("/cart/{username}/{itemId}/update",dependencies=[Depends(JWTBearer())])
+def apiendpoint(db: Session = Depends(get_db),username: str="user_test",itemId: int=1, price: int=0):
     db_name  = crud.get_user_by_username(db, username=username)
     if db_name:
         existing_item = crud.get_item_by_id(db,id=itemId)
