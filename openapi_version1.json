@@ -1,0 +1,858 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Custom title",
+        "description": "This is a very custom OpenAPI schema",
+        "version": "2.5.0",
+        "x-logo": {
+            "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+        }
+    },
+    "servers": [{
+        "url": "http://127.0.0.1:8000"
+    }],
+    "paths": {
+        "/register": {
+            "post": {
+                "summary": "Create User",
+                "operationId": "create_user_register_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "Log In",
+                "operationId": "log_in_login_post",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_log_in_login_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/token/{username}": {
+            "get": {
+                "summary": "Read Items",
+                "operationId": "read_items_token__username__get",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Username"
+                    },
+                    "name": "username",
+                    "in": "path"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/get_user/{username}": {
+            "get": {
+                "summary": "Get User",
+                "operationId": "get_user_get_user__username__get",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Username"
+                    },
+                    "name": "username",
+                    "in": "path"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }, {
+                    "OAuth2PasswordBearer": []
+                }]
+            },
+            "post": {
+                "summary": "Get User",
+                "operationId": "get_user_get_user__username__post",
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/add_item": {
+            "post": {
+                "summary": "Add Item",
+                "operationId": "add_item_add_item_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ItemInfo"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/get_item/{id}": {
+            "get": {
+                "summary": "Get User",
+                "operationId": "get_user_get_item__id__get",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Id"
+                    },
+                    "name": "id",
+                    "in": "path"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemAInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }, {
+                    "OAuth2PasswordBearer": []
+                }]
+            }
+        },
+        "/get_item/": {
+            "get": {
+                "summary": "Get User",
+                "operationId": "get_user_get_item__get",
+                "parameters": [{
+                    "required": false,
+                    "schema": {
+                        "title": "Id",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "name": "id",
+                    "in": "query"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemAInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/del_item/{id}": {
+            "delete": {
+                "summary": "Del User",
+                "operationId": "del_user_del_item__id__delete",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Id"
+                    },
+                    "name": "id",
+                    "in": "path"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ItemAInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }, {
+                    "OAuth2PasswordBearer": []
+                }]
+            }
+        },
+        "/add_to_cart/{username}": {
+            "post": {
+                "summary": "Add Item",
+                "operationId": "add_item_add_to_cart__username__post",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Username"
+                    },
+                    "name": "username",
+                    "in": "path"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CartInfo"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartOwnerInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }]
+            }
+        },
+        "/del_cart_item/{id}": {
+            "delete": {
+                "summary": "Del User",
+                "operationId": "del_user_del_cart_item__id__delete",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Id"
+                    },
+                    "name": "id",
+                    "in": "path"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartItemAInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }, {
+                    "OAuth2PasswordBearer": []
+                }]
+            }
+        },
+        "/payment": {
+            "post": {
+                "summary": "Add Item",
+                "operationId": "add_item_payment_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserPayment"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/callback": {
+            "post": {
+                "summary": "Mpesa Callback",
+                "operationId": "mpesa_callback_callback_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/{username}/{itemId}/update": {
+            "get": {
+                "summary": "Apiendpoint",
+                "operationId": "apiendpoint_cart__username___itemId__update_get",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Username",
+                        "type": "string"
+                    },
+                    "name": "username",
+                    "in": "path"
+                }, {
+                    "required": true,
+                    "schema": {
+                        "title": "Itemid",
+                        "type": "integer"
+                    },
+                    "name": "itemId",
+                    "in": "path"
+                }, {
+                    "required": false,
+                    "schema": {
+                        "title": "Price",
+                        "type": "integer",
+                        "default": 0
+                    },
+                    "name": "price",
+                    "in": "query"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }]
+            }
+        },
+        "/redirect/": {
+            "get": {
+                "summary": "Redirect",
+                "operationId": "redirect_redirect__get",
+                "parameters": [{
+                    "required": true,
+                    "schema": {
+                        "title": "Url",
+                        "type": "string"
+                    },
+                    "name": "url",
+                    "in": "query"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/del_items": {
+            "get": {
+                "summary": "Add Item",
+                "operationId": "add_item_del_items_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body_log_in_login_post": {
+                "title": "Body_log_in_login_post",
+                "required": ["username", "password"],
+                "type": "object",
+                "properties": {
+                    "grant_type": {
+                        "title": "Grant Type",
+                        "pattern": "password",
+                        "type": "string"
+                    },
+                    "username": {
+                        "title": "Username",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "type": "string"
+                    },
+                    "scope": {
+                        "title": "Scope",
+                        "type": "string",
+                        "default": ""
+                    },
+                    "client_id": {
+                        "title": "Client Id",
+                        "type": "string"
+                    },
+                    "client_secret": {
+                        "title": "Client Secret",
+                        "type": "string"
+                    }
+                }
+            },
+            "CartInfo": {
+                "title": "CartInfo",
+                "required": ["itemname", "itemprice"],
+                "type": "object",
+                "properties": {
+                    "itemname": {
+                        "title": "Itemname",
+                        "maxLength": 15,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "item name",
+                        "example": "Fruit"
+                    },
+                    "itemprice": {
+                        "title": "Itemprice",
+                        "minimum": 3.0,
+                        "type": "integer",
+                        "description": "price of item",
+                        "example": "User1"
+                    }
+                }
+            },
+            "CartItemAInfo": {
+                "title": "CartItemAInfo",
+                "required": ["itemname", "itemprice", "id"],
+                "type": "object",
+                "properties": {
+                    "itemname": {
+                        "title": "Itemname",
+                        "maxLength": 15,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "item name",
+                        "example": "Fruit"
+                    },
+                    "itemprice": {
+                        "title": "Itemprice",
+                        "minimum": 3.0,
+                        "type": "integer",
+                        "description": "price of item",
+                        "example": "User1"
+                    },
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    }
+                }
+            },
+            "CartOwnerInfo": {
+                "title": "CartOwnerInfo",
+                "required": ["username"],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "title": "Username",
+                        "maxLength": 15,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "username cart owner",
+                        "example": "user_test"
+                    }
+                }
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "ItemAInfo": {
+                "title": "ItemAInfo",
+                "required": ["itemname", "itemprice", "id"],
+                "type": "object",
+                "properties": {
+                    "itemname": {
+                        "title": "Itemname",
+                        "maxLength": 20,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "name of the item",
+                        "example": "fruit"
+                    },
+                    "itemprice": {
+                        "title": "Itemprice",
+                        "minimum": 1.0,
+                        "type": "integer",
+                        "description": "price of the iten",
+                        "example": "1"
+                    },
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    }
+                }
+            },
+            "ItemInfo": {
+                "title": "ItemInfo",
+                "required": ["itemname", "itemprice"],
+                "type": "object",
+                "properties": {
+                    "itemname": {
+                        "title": "Itemname",
+                        "maxLength": 20,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "name of the item",
+                        "example": "fruit"
+                    },
+                    "itemprice": {
+                        "title": "Itemprice",
+                        "minimum": 1.0,
+                        "type": "integer",
+                        "description": "price of the iten",
+                        "example": "1"
+                    }
+                }
+            },
+            "UserCreate": {
+                "title": "UserCreate",
+                "required": ["username", "fullname", "password"],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "title": "Username",
+                        "maxLength": 10,
+                        "minLength": 5,
+                        "type": "string",
+                        "description": "username of the website",
+                        "example": "User1"
+                    },
+                    "fullname": {
+                        "title": "Fullname",
+                        "maxLength": 18,
+                        "type": "string",
+                        "description": "username and last name",
+                        "example": "John Doe"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "maxLength": 15,
+                        "type": "string",
+                        "description": "passwords of the website"
+                    }
+                }
+            },
+            "UserInfo": {
+                "title": "UserInfo",
+                "required": ["username", "fullname", "id"],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "title": "Username",
+                        "maxLength": 15,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "username of the website",
+                        "example": "User1"
+                    },
+                    "fullname": {
+                        "title": "Fullname",
+                        "maxLength": 20,
+                        "type": "string",
+                        "description": "username and last name",
+                        "example": "John Doe"
+                    },
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    }
+                }
+            },
+            "UserPayment": {
+                "title": "UserPayment",
+                "required": ["phonenumber", "total"],
+                "type": "object",
+                "properties": {
+                    "phonenumber": {
+                        "title": "Phonenumber",
+                        "maximum": 9.0,
+                        "minimum": 9.0,
+                        "type": "integer",
+                        "description": "Phone number ",
+                        "example": "John Doe"
+                    },
+                    "total": {
+                        "title": "Total",
+                        "type": "integer"
+                    }
+                }
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": ["loc", "msg", "type"],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "JWTBearer": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "OAuth2PasswordBearer": {
+                "type": "oauth2",
+                "flows": {
+                    "password": {
+                        "scopes": {},
+                        "tokenUrl": "token"
+                    }
+                }
+            }
+        }
+    }
+}

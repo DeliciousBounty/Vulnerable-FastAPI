@@ -67,9 +67,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 async def log_in(form_data: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     print("username: ", form_data.username, "password: ", form_data.password)
     db_user = crud.get_Login(db, username=form_data.username, password=form_data.password)
-    if db_user == False :
+    if db_user == False:
         return {"message":"User not found"}
         raise HTTPException(status_code=400, detail="Wrong username/password")
+        
+        
     else:
         #get_token_url= f"http://127.0.0.1:8000/token/{form_data.username}"
        # print("url", get_token_url)
@@ -179,7 +181,7 @@ def mpesa_callback(db: Session = Depends(get_db)):
 
 
 ###/cart/username/itemId?updatePrice=2
-@app.get("/cart/{username}/{itemId}/update",dependencies=[Depends(JWTBearer())])
+@app.get("/cart/{username}/{itemId}/update")
 def apiendpoint(db: Session = Depends(get_db),username: str="user_test",itemId: int=1, price: int=0):
     db_name  = crud.get_user_by_username(db, username=username)
     if db_name:

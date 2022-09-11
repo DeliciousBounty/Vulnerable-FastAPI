@@ -93,10 +93,15 @@ def delete_item_by_id(db: Session, id: int):
 
 def delete_table_item(db: Session):
     deltable = db.query(models.ItemInfo).all()
+    deluser = db.query(models.UserInfo).all()
     if deltable is None:
         return 
     for o in deltable:
         db.delete(o)
+    if deluser is None:
+        return 
+    for x in deluser:
+        db.delete(x)
     db.commit()
 
 # Add to cart function
@@ -126,7 +131,6 @@ def modify_price(db: Session, item: schemas.ItemInfo ,price: int):
       #  raise HTTPException(status_code=404, detail="Hero not found")
     if item is None:
             print("NOT TOKKKK")
-    print("Okkkkkkkkkkkkkkkkkkkkkkkkk")
     print("item::",item)
     setattr(item,"itemprice" , price)
     print("here!")
