@@ -4,6 +4,7 @@
   
  * 
  '''
+from collections import UserList
 from http.client import HTTPException
 import os
 from datetime import datetime, timedelta
@@ -74,6 +75,10 @@ def get_Login(db: Session, username: str, password:str):
 def get_item_by_id(db: Session, id: int):
     return db.query(models.ItemInfo).filter(models.ItemInfo.id == id).first()
 
+#get item by name
+def get_item_price_by_name(db: Session, name: str):
+    return db.query(models.ItemInfo.itemprice).filter(models.ItemInfo.itemname == name).first()
+
 # Add items to DB function
 def add_table(db: Session, item: schemas.ItemInfo):
     db_item = models.ItemInfo(itemname=item.itemname,itemprice=item.itemprice)
@@ -107,7 +112,7 @@ def delete_table_item(db: Session):
 # Add to cart function
 def add_to_cart(db: Session, username: str, items:models.CartInfo):
     user = db.query(models.UserInfo).filter(models.UserInfo.username == username).first()
-    db_cart = models.CartInfo(ownername=user.id,itemname=items.itemname,itemprice=items.itemprice)
+    db_cart = models.CartInfo(ownername=user.id,itemname=items.itemname,quantity=items.quantity)
     db.add(db_cart)
     db.commit()
     db.refresh(db_cart)
@@ -122,9 +127,12 @@ def delete_cart_item_by_id(db: Session, id: int):
     db.commit()
     return delitem
 
+def get_cart_by_id(db: Session, id: int):
+    cartItem = db.query(models.CartInfo).filter(models.CartInfo.id == id).first()
+    return cartItem
 # Modify item
 def modify_price(db: Session, item: schemas.ItemInfo ,price: int):
-  #  db_item = models.ItemInfo(itemname=item.itemname, itemprice=item.itemprice)
+   #  db_item = models.ItemInfo(itemname=item.itemname, itemprice=item.itemprice)
    # db_item = db.query(models.ItemInfo).filter(models.ItemInfo.id == item).first()
    # print(db_item)
    # if not db_item:
@@ -141,37 +149,57 @@ def modify_price(db: Session, item: schemas.ItemInfo ,price: int):
     
 
 # Mpesa processing function(Not Complete Yet)
-def payment(db:Session, phone_number:int,total:int):
-    consumer_key = 'consumer_key'
-    consumer_secret = 'consumer_secret'
-    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+def payment(db:Session, phone_number:int , id:int):
+    total = 0 
+    # consumer_key = 'consumer_key'
+    # consumer_secret = 'consumer_secret'
+    # api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+   
+    user = db.query(models.UserInfo).filter(models.UserInfo.id == id).first()
+    if user:
+        cartItem = get_cart_by_id(db, id)
+        if cartItem:
+            q = db.query(models.CartInfo.quantity).filter(models.UserInfo.id==id).first()
+            item_name = db.query(models.CartInfo.itemname).filter(models.UserInfo.id==id).first()
 
-    r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
-    mpesa_access_token = json.loads(r.text)
-    validated_mpesa_access_token = mpesa_access_token['access_token']
+            print("THEEEEE ITEM NAME :  ", item_name[0])
+            price = get_item_price_by_name(db, item_name[0])
+            total = q[0]*int(price[0])
+                
+            return {"message":"Your purchase has been executed successfully", "totalprice":int(total)}
+        else:
+            return {"message":"cart is empty!"}
+    else:
+        return {"message":"no user"}
 
-    lipa_time = datetime.now().strftime('%Y%m%d%H%M%S')
-    Business_short_code = 'short_code' # replace with the business short code
-    passkey = "pass_key"
-    data_to_encode = Business_short_code + passkey + lipa_time
-    online_password = base64.b64encode(data_to_encode.encode())
-    decode_password = online_password.decode('utf-8')
 
-    access_token = validated_mpesa_access_token
-    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-    headers = {"Authorization": "Bearer %s" % access_token}
-    request = {
-        "BusinessShortCode": Business_short_code,
-        "Password": decode_password,
-        "Timestamp": lipa_time,
-        "TransactionType": "CustomerPayBillOnline",
-        "Amount": total,
-        "PartyA": phone_number,
-        "PartyB": Business_short_code,
-        "PhoneNumber": phone_number,
-        "CallBackURL": "https://127.0.0.1:8000/callback", # Mpesa Callback
-        "AccountReference": "User Payment",
-        "TransactionDesc": "Testing stk push"
-    }
-    response = requests.post(api_url, json=request, headers=headers)
-    return response.text
+
+    # r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    # mpesa_access_token = json.loads(r.text)
+    # validated_mpesa_access_token = mpesa_access_token['access_token']
+
+    # lipa_time = datetime.now().strftime('%Y%m%d%H%M%S')
+    # Business_short_code = 'short_code' # replace with the business short code
+    # passkey = "pass_key"
+    # data_to_encode = Business_short_code + passkey + lipa_time
+    # online_password = base64.b64encode(data_to_encode.encode())
+    # decode_password = online_password.decode('utf-8')
+
+    # access_token = validated_mpesa_access_token
+    # api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    # headers = {"Authorization": "Bearer %s" % access_token}
+    # request = {
+    #     "BusinessShortCode": Business_short_code,
+    #     "Password": decode_password,
+    #     "Timestamp": lipa_time,
+    #     "TransactionType": "CustomerPayBillOnline",
+    #     "Amount": total,
+    #     "PartyA": phone_number,
+    #     "PartyB": Business_short_code,
+    #     "PhoneNumber": phone_number,
+    #     "CallBackURL": "https://127.0.0.1:8000/callback", # Mpesa Callback
+    #     "AccountReference": "User Payment",
+    #     "TransactionDesc": "Testing stk push"
+    # }
+    # response = requests.post(api_url, json=request, headers=headers)
+    # return response.text

@@ -50,7 +50,7 @@ class CartOwnerInfo(BaseModel):
 #base schema for adding items to cart
 class CartInfo(BaseModel):
     itemname:str = Field(...,description= "item name", min_length=3,max_length=15, example= "Fruit")
-    itemprice:int =Field(...,description= "price of item", minimum=3, example= "User1")
+    quantity:int =Field(...,description= "quantity", minimum=1, type= "integer",example= "1")
 
 #base schema for getting items in the cart by id
 class CartItemAInfo(CartInfo):
@@ -61,5 +61,5 @@ class CartItemAInfo(CartInfo):
 
 #base schema for the payment api
 class UserPayment(BaseModel):
-    phonenumber:int = Field( ...,description= "Phone number ", minimum=9,maximum=9, example= "John Doe")
-    total:int 
+    phonenumber:int = Field( ...,description= "Phone number ", minimum=9,maximum=9, example= "+95343253453")
+    id: int = Field( ...,description= "User Id  ", minimum=0,maximum=100, example= "1")

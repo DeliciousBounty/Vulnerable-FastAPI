@@ -31,4 +31,6 @@ class CartInfo(Base):
     id = Column(Integer, primary_key=True, index=True)
     ownername= Column(String(24), unique=True)
     itemname= Column(String(16), unique=True)
-    itemprice = Column(Integer)
+    quantity = Column(Integer)
+   # itemprice = Column(Integer)
+   

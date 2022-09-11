@@ -154,6 +154,8 @@ def add_item(username, items:schemas.CartInfo, db: Session = Depends(get_db)):
     db_cart = crud.add_to_cart(db=db, username=username,items=items)
     if db_cart:
         raise HTTPException(status_code=200, detail="item registered to cart")
+    else:
+        raise HTTPException(status_code=400, detail="item not exist")
     return 
 
 # delete items in the cart by id API
@@ -167,12 +169,18 @@ def del_user(id, db:Session = Depends(get_db),token: str = Depends(oauth2_scheme
     return
 
 # mpesa payment API
-@app.post("/payment")
-def add_item(userphone:schemas.UserPayment, db: Session = Depends(get_db)):
-    user_payment = crud.payment(db=db, phone_number=userphone.phonenumber,total=userphone.total)
+@app.post("/payment", dependencies=[Depends(JWTBearer())])
+def add_item( userphone:schemas.UserPayment ,db: Session = Depends(get_db)):
+    print('Id: ', userphone.id)
+    user_payment = crud.payment(db, phone_number=userphone.phonenumber, id =userphone.id)
     if user_payment:
-        raise HTTPException(status_code=200, detail="payment Started")
-    return 
+        return user_payment
+       # raise HTTPException(status_code=200, detail=user_payment)
+    else:
+        raise HTTPException(status_code=400, detail="error")
+
+
+
 
 # mpesa Callback API
 @app.post("/callback")
