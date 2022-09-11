@@ -46,7 +46,7 @@ cd sql_app
 ```sh
 uvicorn main:app --reload
 ```
-##Vulnerabilies
+## Vulnerabilies
 To test for vulnerabilities use the openapi_version1.json and buid [Cherrybomb](https://github.com/blst-security/cherrybomb) from the branch dev_last_nathan
 
 
