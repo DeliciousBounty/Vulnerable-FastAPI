@@ -214,8 +214,6 @@ def mpesa_callback(db: Session = Depends(get_db)):
 ###/cart/username/itemId?updatePrice=2 obdcure endpoint
 @app.post("/cart/{username}/{itemId}/update",status_code = 200)
 def apiendpoint(price: schemas.ItemInfo, db: Session = Depends(get_db),username: str="user_test",itemId: int=1):
-    print("HITTTT")
-    raise HTTPException(status_code=200, detail="Item not exising")
     db_name  = crud.get_user_by_username(db, username=username)
     print("okkk1",username," ",itemId)
     if db_name:

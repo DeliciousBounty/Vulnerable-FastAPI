@@ -159,20 +159,6 @@
                 }, {
                     "OAuth2PasswordBearer": []
                 }]
-            },
-            "post": {
-                "summary": "Get User",
-                "operationId": "get_user_get_user__username__post",
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
             }
         },
         "/add_item": {
@@ -458,7 +444,10 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [{
+                    "JWTBearer": []
+                }]
             }
         },
         "/callback": {
@@ -478,9 +467,9 @@
             }
         },
         "/cart/{username}/{itemId}/update": {
-            "get": {
+            "post": {
                 "summary": "Apiendpoint",
-                "operationId": "apiendpoint_cart__username___itemId__update_get",
+                "operationId": "apiendpoint_cart__username___itemId__update_post",
                 "parameters": [{
                     "required": true,
                     "schema": {
@@ -497,16 +486,17 @@
                     },
                     "name": "itemId",
                     "in": "path"
-                }, {
-                    "required": false,
-                    "schema": {
-                        "title": "Price",
-                        "type": "integer",
-                        "default": 0
-                    },
-                    "name": "price",
-                    "in": "query"
                 }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ItemInfo"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -621,7 +611,7 @@
             },
             "CartInfo": {
                 "title": "CartInfo",
-                "required": ["itemname", "itemprice"],
+                "required": ["itemname", "quantity"],
                 "type": "object",
                 "properties": {
                     "itemname": {
@@ -632,18 +622,18 @@
                         "description": "item name",
                         "example": "Fruit"
                     },
-                    "itemprice": {
-                        "title": "Itemprice",
-                        "minimum": 3.0,
+                    "quantity": {
+                        "title": "Quantity",
+                        "minimum": 1.0,
                         "type": "integer",
-                        "description": "price of item",
-                        "example": "User1"
+                        "description": "quantity",
+                        "example": "1"
                     }
                 }
             },
             "CartItemAInfo": {
                 "title": "CartItemAInfo",
-                "required": ["itemname", "itemprice", "id"],
+                "required": ["itemname", "quantity", "id"],
                 "type": "object",
                 "properties": {
                     "itemname": {
@@ -654,12 +644,12 @@
                         "description": "item name",
                         "example": "Fruit"
                     },
-                    "itemprice": {
-                        "title": "Itemprice",
-                        "minimum": 3.0,
+                    "quantity": {
+                        "title": "Quantity",
+                        "minimum": 1.0,
                         "type": "integer",
-                        "description": "price of item",
-                        "example": "User1"
+                        "description": "quantity",
+                        "example": "1"
                     },
                     "id": {
                         "title": "Id",
@@ -702,15 +692,15 @@
                 "properties": {
                     "itemname": {
                         "title": "Itemname",
-                        "maxLength": 20,
-                        "minLength": 3,
+                        "maxLength": 16,
+                        "minLength": 4,
                         "type": "string",
                         "description": "name of the item",
                         "example": "fruit"
                     },
                     "itemprice": {
                         "title": "Itemprice",
-                        "minimum": 1.0,
+                        "minimum": 3,
                         "type": "integer",
                         "description": "price of the iten",
                         "example": "1"
@@ -750,15 +740,15 @@
                 "properties": {
                     "username": {
                         "title": "Username",
-                        "maxLength": 10,
-                        "minLength": 5,
+                        "maxLength": 15,
+                        "minLength": 3,
                         "type": "string",
                         "description": "username of the website",
-                        "example": "User1"
+                        "example": "user_test"
                     },
                     "fullname": {
                         "title": "Fullname",
-                        "maxLength": 18,
+                        "maxLength": 20,
                         "type": "string",
                         "description": "username and last name",
                         "example": "John Doe"
@@ -782,7 +772,7 @@
                         "minLength": 3,
                         "type": "string",
                         "description": "username of the website",
-                        "example": "User1"
+                        "example": "user_test"
                     },
                     "fullname": {
                         "title": "Fullname",
@@ -799,7 +789,7 @@
             },
             "UserPayment": {
                 "title": "UserPayment",
-                "required": ["phonenumber", "total"],
+                "required": ["phonenumber", "id"],
                 "type": "object",
                 "properties": {
                     "phonenumber": {
@@ -808,11 +798,15 @@
                         "minimum": 9.0,
                         "type": "integer",
                         "description": "Phone number ",
-                        "example": "John Doe"
+                        "example": "+95343253453"
                     },
-                    "total": {
-                        "title": "Total",
-                        "type": "integer"
+                    "id": {
+                        "title": "Id",
+                        "maximum": 100.0,
+                        "minimum": 0.0,
+                        "type": "integer",
+                        "description": "User Id  ",
+                        "example": "1"
                     }
                 }
             },
