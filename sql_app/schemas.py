@@ -13,7 +13,7 @@ from sqlalchemy import Column, Integer, String
 from database import Base
 # base schema for user data
 class UserInfoBase(BaseModel):
-    username:str = Field(...,description= "username of the website", min_length=3,max_length=15, example= "User1")
+    username:str = Field(...,description= "username of the website", min_length=3,max_length=15, example= "user_test")
     fullname:str = Field(..., description= "username and last name", max_length=20, example= "John Doe")
 
 #schema for user creation(registration)
@@ -63,3 +63,8 @@ class CartItemAInfo(CartInfo):
 class UserPayment(BaseModel):
     phonenumber:int = Field( ...,description= "Phone number ", minimum=9,maximum=9, example= "+95343253453")
     id: int = Field( ...,description= "User Id  ", minimum=0,maximum=100, example= "1")
+
+
+class ItemPriceInfo(BaseModel):
+    itemname:str = Field(..., description= "name of the item", min_length=3,max_length=20, example= "fruit") 
+    itemprice:int =Field(..., description= "price of the iten", minimum=1, example= "1")

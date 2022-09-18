@@ -29,8 +29,8 @@ class ItemInfo(Base):
 class CartInfo(Base):
     __tablename__ = "cart_info"
     id = Column(Integer, primary_key=True, index=True)
-    ownername= Column(String(24), unique=True)
-    itemname= Column(String(16), unique=True)
+    ownername= Column(String(24))
+    itemname= Column(String(16))
     quantity = Column(Integer)
    # itemprice = Column(Integer)
    

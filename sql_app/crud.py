@@ -4,6 +4,7 @@
   
  * 
  '''
+from sqlalchemy.ext.compiler import compiles
 from collections import UserList
 from http.client import HTTPException
 import os
@@ -130,25 +131,26 @@ def delete_cart_item_by_id(db: Session, id: int):
 def get_cart_by_id(db: Session, id: int):
     cartItem = db.query(models.CartInfo).filter(models.CartInfo.id == id).first()
     return cartItem
-# Modify item
-def modify_price(db: Session, item: schemas.ItemInfo ,price: int):
+# Modify itemint
+def modify_price(db: Session, id: int ,price: int):
+   print("sitbon",id)
    #  db_item = models.ItemInfo(itemname=item.itemname, itemprice=item.itemprice)
-   # db_item = db.query(models.ItemInfo).filter(models.ItemInfo.id == item).first()
-   # print(db_item)
+   db_item = db.query(models.ItemInfo).filter(models.ItemInfo.id == id).first()
+   print("sitbon2",db_item)
    # if not db_item:
       #  raise HTTPException(status_code=404, detail="Hero not found")
-    if item is None:
-            print("NOT TOKKKK")
-    print("item::",item)
-    setattr(item,"itemprice" , price)
+   if db_item is None:
+    print("NOT TOKKKK")
+   else:
+    setattr(db_item,"itemprice" , price)
     print("here!")
-  
-    db.add(item)
+    db.add(db_item)
     db.commit()
-    return item
+    return db_item
     
 
 # Mpesa processing function(Not Complete Yet)
+@classmethod
 def payment(db:Session, phone_number:int , id:int):
     total = 0 
     # consumer_key = 'consumer_key'

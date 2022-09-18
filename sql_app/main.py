@@ -25,7 +25,6 @@ from database import engine, SessionLocal # import d functions
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
 
-
 from jwt_token import JWTBearer
 
 #server2 = Server(url="http://127.0.0.1:8000")
@@ -188,19 +187,54 @@ def mpesa_callback(db: Session = Depends(get_db)):
     return {'success':"Payment was made successfully!"}
 
 
-###/cart/username/itemId?updatePrice=2
-@app.get("/cart/{username}/{itemId}/update")
-def apiendpoint(db: Session = Depends(get_db),username: str="user_test",itemId: int=1, price: int=0):
+# ###/cart/username/itemId?updatePrice=2 obdcure endpoint
+# @app.get("/cart/{username}/{itemId}/update", status_code = 200)
+# def apiendpoint(db: Session = Depends(get_db),username: str="user_test",itemId: int=1, price: int= 1):
+#     #raise HTTPException(status_code=200, detail="Item not exising")
+#     db_name  = crud.get_user_by_username(db, username=username)
+#     print("okkk1",username," ",itemId)
+#     if db_name:
+#          existing_item = crud.get_item_by_id(db,id=itemId)
+#          if existing_item :
+#             print("Okk3")
+#             print("existing", existing_item)
+#             action = crud.modify_price(db,itemId,price=price)
+#             if action:
+#                 return {'Success':"modified"}
+#             else:
+#                 raise HTTPException(status_code=200, detail="Item not exising")
+
+#          else:
+#             print("item not existing")
+#             raise HTTPException(status_code=200, detail="User not exising")
+#             return {'error': 'item not existing'}
+#          raise HTTPException(status_code=200, detail="User or item not exising")
+
+
+###/cart/username/itemId?updatePrice=2 obdcure endpoint
+@app.post("/cart/{username}/{itemId}/update",status_code = 200)
+def apiendpoint(price: schemas.ItemInfo, db: Session = Depends(get_db),username: str="user_test",itemId: int=1):
+    print("HITTTT")
+    raise HTTPException(status_code=200, detail="Item not exising")
     db_name  = crud.get_user_by_username(db, username=username)
+    print("okkk1",username," ",itemId)
     if db_name:
-        existing_item = crud.get_item_by_id(db,id=itemId)
-        if existing_item :
-            action = crud.modify_price(db,existing_item,price)
+         existing_item = crud.get_item_by_id(db,id=itemId)
+         if existing_item :
+            print("Okk3")
+            print("existing", existing_item)
+            action = crud.modify_price(db,itemId,price=price.itemprice)
             if action:
                 return {'Success':"modified"}
-        else:
+            else:
+                raise HTTPException(status_code=200, detail="Item not exising")
+
+         else:
             print("item not existing")
+            raise HTTPException(status_code=200, detail="User not exising")
             return {'error': 'item not existing'}
+    raise HTTPException(status_code=200, detail="User or item not exising")
+
 
 
 
