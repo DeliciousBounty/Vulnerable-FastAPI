@@ -38,6 +38,8 @@ Then
 git clone 
 source fastapienv/bin/activate
 pip3 install -r requirements.txt
+pip3 install mysql-connector-python
+
 cd sql_app
 ```
 
